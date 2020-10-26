@@ -7,31 +7,53 @@
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
     <script src='news_app.js'></script>
+    <script
+  src="https://code.jquery.com/jquery-3.1.1.min.js"
+  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+  crossorigin="anonymous"></script>
+<script src="semantic/dist/semantic.min.js"></script>
 </head>
+
 <body>
-    <h1>Welcome to my News website!</h1>
-    
-    <div class="jumbotron jumbotron-fluid">
-        <div class="container">
-          <h1 class="display-4">Check out the latest Gossip!</h1>
-          <button type="button" class="btn btn-primary" id="button-news">Check it out</button>
-          <p class="lead"></p>
+  <h1>Welcome to my News website!</h1>
+  <div class="ui container">
+    <!-- Header -->
+    <div class="ui segment">
+      <h1>Get the daily news Here</h1>
+    </div>
+    <!--Search Bar-->
+    <form class="ui form">
+      <div class="fields">
+        <div class="fourteen wide field">
+          <input type ='text' class="searchInput" placeholder="Search ..">  
+        </div>
+        <div class="two wide field">
+          <button type="submit" id="search-button" class="ui button ">
+          </button>
         </div>
       </div>
+    </form>
 
-    <div class="row">
-        <div class="cards" id = 'card'>
-            <div class="card" style="width: 18rem;">
-                <img src="..." class="card-img-top" alt="...">
-                <div class="card-body">
-                  <h5 class="card-title">Card title</h5>
-                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                  <a href="#" class="btn btn-primary">Go somewhere</a>
-                </div>
-              </div>
-        </div>
+    <!-- Div to display the articles-->
+    <div id="news-search-results" class="ui segment d-none">
+      <h1 id="total-articles" class="ui header"></h1>
+      <div id="news-cards" class="ui link cards"></div>
     </div>
+    <!--Display selected clicked articles-->
+    <div id= 'main-news-display' class= 'ui segment d-none'>
+
+    </div>
+    <!-- Div to display news Search Results-->
+    <div id="news-container" class="ui segment d-none">
+      <h1 id = "news-header" class="ui segment d-none">
+        <div id="news" class="ui items">
+          
+        </div>
+      </h1>
+    </div>
+  </div>
     
 </body>
 </html>
