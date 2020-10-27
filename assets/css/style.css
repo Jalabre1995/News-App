@@ -1,0 +1,32 @@
+body {
+    background-image: url("https://www.android.pk/blog/wp-content/uploads/2014/10/Moto-wallpaper-1080_1920-798x350.jpg");
+    min-height: 100vh;
+}
+
+div.ui.segment {
+    background-image: url("https://www.android.pk/blog/wp-content/uploads/2014/10/Moto-wallpaper-1080_1920-798x350.jpg");
+    background-size: auto;
+}
+
+.d-none {
+    display: none;
+}
+
+h1 {
+    font-family: 'Fruktur', cursive;
+    font-size: 40px;
+}
+
+h1,
+h2,
+h3 {
+    text-align: center;
+    color:black
+}
+
+
+.ui.items>.item,
+#total-games,
+#news-header {
+    background-color: rgba(255, 255, 255, .9);
+}
