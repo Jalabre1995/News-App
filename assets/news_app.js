@@ -1,21 +1,21 @@
 /// created a variable to hold the total number of news articles
-let totalSources = 0;
+let totalArticles;
 
 //Increment if the query was successful have it start at 0.
 
 let randomNewsCount = 0;
 
-// Query all the sources right here
+// Query all the articles right here
 $.ajax({
-    url: 'https://newsapi.org/v2/sources?apiKey=5b70edca1d034d86b9a94213f1344c61',
+    url: 'https://gnews.io/api/v4/top-headlines?token=41781c49fe723df3a38e0aaa430ef5db',
     method: 'GET'
 }).then(function(response) {
-    totalSources = response.count;
+    totalArticles = response.count;
     prepDisplay();
     ///Show the necessary <divs> and 
     $('#news-search-results').removeClass('d-none');
     $('#total-articles').removeClass('d-none');
-    $('#total-articles').text('The Headlines that are shown are ? ' + resposne.count + 'articles. Here are some for you to read and Enjoy!: ')
+    $('#total-articles').text('The database contains ' + response.totalArticles + ' articles. Enjoy! Here are a few examples: ')
     getArticles();
 });
 
@@ -31,9 +31,9 @@ function prepDisplay(){
 
 ///Get the news articles///
 function getNewsArticles(){
-    let randNum = Math.floor(Math.random() * totalNews);
+    let randNum = Math.floor(Math.random() * totalArticles);
     $.ajax({
-        url: 'https://newsapi.org/v2/everything?q=' + randNum,
+        url: 'https://gnews.io/api/v4/top-headlines?token=41781c49fe723df3a38e0aaa430ef5db' + randNum,
         method: 'Get'
     }).then(function(response){
         populateNewsSearchCards(response);
@@ -49,11 +49,11 @@ function getNewsArticles(){
 }
 ///When the user loades the page, have the div cards populated and loaded
 
-function populateNewsSearchCards(resposne){
+function populateNewsSearchCards(response){
     let newCard = $('<div class="card"');
     $(newCard).attr('id', response.id);
     let cardImage = $('<div class="image"');
-    if(response.background_imge == null){
+    if(response.background_imge === null){
         ///Put a radom placeholder 
     }else{
         $(cardImage).append('<img src="' + response.background_imge + '">');
@@ -66,11 +66,11 @@ function populateNewsSearchCards(resposne){
 
     let description = $('<div class="description">');
 
-    let releaseDate = $('<p>').text('Release Date: ' + response.realeased);
+    let releaseDate = $('<p>').text('Release Date: ' + response.publishedAt);
     description.append(releaseDate);
 
     let articleId = $('<p>').text('News ID: ' + response.id);
-    description.append(articleId);
+    description.append(source);
     
     cardContent.append(description);
     newCard.append(cardContent);
@@ -89,14 +89,14 @@ searchIcon.on('click', function(e)
     var userInput = $(".searchInput").val();
     uSearch(userInput)
 
-})
+});
 
 function uSearch(title) {
     $.ajax({
-        url: "'https://newsapi.org/v2/everything?page_size=5&search=" + title,
+        url: "https://gnews.io/api/v4/search?q=example&token=41781c49fe723df3a38e0aaa430ef5db" + name,
         method: 'GET'
     }).then(function(response) {
-        for (var i = 0; i < response.results.length; i++)
+        for (var i = 0; i < response.totalArticles; i++)
         {
             populateNewsSearchCards(response.results[i]);
         }
@@ -107,29 +107,29 @@ function uSearch(title) {
 
 
 
-//Use the News Api for the articles 
-function queryNews(news) {
+//Use to populate other articles related to the topic///
+function queryNews(name) {
     $.ajax({
-        url:'https://newsapi.org/v2/everything?q=' + news + '&apiKey=5b70edca1d034d86b9a94213f1344c61',
+        url:'https://gnews.io/api/v4/top-headlines?token=41781c49fe723df3a38e0aaa430ef5db' + name ,
         mwthod: 'GET'
     }).then(function(response) {
-        $('#news-header').text("Here is" + response.articles.length + 'news related to ' + news);
+        $('#news-header').text("Here is" + response.totalArticles + 'news related to ' + name);
 
-        if(response.articles.legnth > 0) {
+        if(response.totalArticles > 0) {
             ///Loop through all the articles that are given
-            for(let i = 0; i < response.articles.length; i++) {
+            for(let i = 0; i < response.totalArticles; i++) {
                 //populoate the news results using semantic UI
                 let newItem = $('<div class= "item">');
                 let itemImage = $('div class= "image">');
-                $(itemImage).append('<img src="' + response.articles[i].urlToImage + '">');
+                $(itemImage).append('<img src="' + response.totalArticles[i].urlToImage + '">');
                 newItem.append(itemImage);
 
                 let itemContent =  $('<div class="content">');
-                let itemHeader = $('<div class="header">').text(response.articles[i].title);
+                let itemHeader = $('<div class="header">').text(response.totalArticles[i].title);
                 itemContent.append(itemHeader);
 
                 let description = $('<div class="description"');
-                $(description).appned($('<p>').text('Published by ' + response.articles[i].source.name + ' at ' + response.articles[i].publishedAt));
+                $(description).appned($('<p>').text('Published by ' + response.totalArticles[i].source.name + ' at ' + response.totalArticles[i].publishedAt));
                 $(description).appedn($('<p>').text(response.articles[i].description))
                 itemContent.append(description);
             }
