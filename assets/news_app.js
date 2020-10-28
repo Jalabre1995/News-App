@@ -34,9 +34,9 @@ function getNewsArticles(){
     let randNum = Math.floor(Math.random() * totalArticles);
     $.ajax({
         url: 'https://gnews.io/api/v4/top-headlines?token=41781c49fe723df3a38e0aaa430ef5db' + randNum,
-        method: 'Get'
+        method: 'GET'
     }).then(function(response){
-        populateNewsSearchCards(response);
+        populateNewsSearchCards(response.totalArticles);
         randomNewsCount++;
         //call the fucntion until 5 responses are generated
         if (randomNewsCount < 5 ) {
@@ -53,24 +53,24 @@ function populateNewsSearchCards(response){
     let newCard = $('<div class="card"');
     $(newCard).attr('id', response.id);
     let cardImage = $('<div class="image"');
-    if(response.background_imge === null){
+    if(response.articles[i].image === null){
         ///Put a radom placeholder 
     }else{
-        $(cardImage).append('<img src="' + response.background_imge + '">');
+        $(cardImage).append('<img src="' + response.articles[i].image + '">');
     }
     newCard.append(cardImage);
 
     let cardContent = $('<div class="content">');
-    let cardHeader = $('<div class-="header">').text(response.name);
+    let cardHeader = $('<div class-="header">').text(response.articles[i].source.name);
     cardContent.append(cardHeader);
 
     let description = $('<div class="description">');
 
-    let releaseDate = $('<p>').text('Release Date: ' + response.publishedAt);
+    let releaseDate = $('<p>').text('Release Date: ' + response.articles[i].publishedAt);
     description.append(releaseDate);
 
     let articleId = $('<p>').text('News ID: ' + response.id);
-    description.append(source);
+    description.append(articleId);
     
     cardContent.append(description);
     newCard.append(cardContent);
@@ -91,18 +91,64 @@ searchIcon.on('click', function(e)
 
 });
 
-function uSearch(title) {
+///Function is called when the user searches. 
+
+function uSearch(totalArticles) {
     $.ajax({
-        url: "https://gnews.io/api/v4/search?q=example&token=41781c49fe723df3a38e0aaa430ef5db" + name,
+        url: "https://gnews.io/api/v4/top-headlines?token=41781c49fe723df3a38e0aaa430ef5db" + totalArticles,
         method: 'GET'
     }).then(function(response) {
         for (var i = 0; i < response.totalArticles; i++)
         {
-            populateNewsSearchCards(response.results[i]);
+            populateNewsSearchCards(response.totalArticles[i]);
         }
     });
 }
 
+///When the user clicks on the news card////
+
+// event handler when the user clicks on a game card
+$('#news-search-results').on('click', '.card', function() {
+    prepDisplay();
+    $('#main-gnews-display').removeClass('d-none');
+    $('#news-container').removeClass('d-none');
+    // call the function to query news API via news ID
+    querySpecificArtcile($(this).attr('id'));
+    // call the function to search for news related to the news title
+    queryNews($(this).find('.header').text());
+  });
+
+  ///Query a specific article///
+  function querySpecificArticle(totalArticles){
+      $.ajax({
+          url:'https://gnews.io/api/v4/top-headlines?token=41781c49fe723df3a38e0aaa430ef5db'+ totalArticles,
+          method:'GET'
+      }).then(function(response){
+          ///Popualte the cards byt writing up the html
+          //Add the semantic UI classes
+          let newCard = $('<div class="ui card fluid">');
+          let cardImg = $('<div class= "image">');
+          if(response.articles[i].image === null) {
+              ///Display the placeholder image///
+          }else {
+              $(cardImg).append('<img src="' + response.articles[i].image + '">');
+          }
+          newCard.append(cardImg);
+          let cardContent = $('<div class="content">');
+          let cardHeader = $('<div class="header">').text(response.articles[i].title);
+          cardContent.appedn(cardHeader);
+
+          let cardDescription = $('<div class="desciption">');
+          let releaseDate = $('<p>').text('This article was released in: ' + response.articles[i].publishedAt);
+          let articleDescription = $('<p>').text(response.articles[i].description);
+
+          cardDescription.append(releaseDate,articleDescription);
+          cardContent.append(cardDescription);
+          newCard.appned(cardContent);
+          $('#main-news-display').append(newCard);
+
+      });
+  }
 
 
 
